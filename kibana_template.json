@@ -1,0 +1,6 @@
+{
+  "attributes": {
+    "title": "my-index-*",
+    "timeFieldName": "@timestamp"
+  }
+}

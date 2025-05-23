@@ -1,0 +1,8 @@
+[
+  {
+    "id": "sample-node-id",
+    "type": "inject",
+    "name": "Sample Inject",
+    ...
+  }
+]
