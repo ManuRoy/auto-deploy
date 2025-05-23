@@ -1,8 +1,63 @@
 [
   {
-    "id": "sample-node-id",
+    "id": "1",
     "type": "inject",
-    "name": "Sample Inject",
-    ...
+    "z": "main",
+    "name": "Inject JSON Array",
+    "props": [
+      {
+        "p": "payload"
+      }
+    ],
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "payload": "[{\"sensor\":\"A1\",\"temperature\":22.5,\"unit\":\"C\"},{\"sensor\":\"A2\",\"temperature\":24.1,\"unit\":\"C\"},{\"sensor\":\"A3\",\"temperature\":21.9,\"unit\":\"C\"}]",
+    "payloadType": "json",
+    "x": 140,
+    "y": 100,
+    "wires": [
+      [
+        "2"
+      ]
+    ]
+  },
+  {
+    "id": "2",
+    "type": "split",
+    "z": "main",
+    "name": "Split Array",
+    "splt": "\\n",
+    "spltType": "str",
+    "arraySplt": 1,
+    "arraySpltType": "len",
+    "stream": false,
+    "addname": "",
+    "x": 320,
+    "y": 100,
+    "wires": [
+      [
+        "3"
+      ]
+    ]
+  },
+  {
+    "id": "3",
+    "type": "debug",
+    "z": "main",
+    "name": "Each Sensor",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "payload",
+    "targetType": "msg",
+    "statusVal": "",
+    "statusType": "auto",
+    "x": 500,
+    "y": 100,
+    "wires": []
   }
 ]
