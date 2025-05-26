@@ -6,7 +6,7 @@ pipeline {
         RABBITMQ_API = "http://localhost:15672/api/queues"
         LOGSTASH_CONF_DIR = "/etc/logstash/conf.d"
         KIBANA_HOST = "http://localhost:5601"
-        ELASTIC_HOST = "http://localhost:9200"
+        ELASTIC_HOST = "https://localhost:9200"
         ELASTIC_USER = "elastic"
         ELASTIC_PASS = "PlnLz35OqHQ1UAOLqo8b"
     }
@@ -44,7 +44,7 @@ pipeline {
         stage('Register Elasticsearch Index Template') {
             steps {
                 sh '''
-                curl -X PUT -u $ELASTIC_USER:$ELASTIC_PASS \
+                curl -k -X PUT -u $ELASTIC_USER:$ELASTIC_PASS \
                      -H "Content-Type: application/json" \
                      -d @elasticsearch_template.json \
                      "$ELASTIC_HOST/_index_template/my-template"
