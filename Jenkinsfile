@@ -6,6 +6,7 @@ pipeline {
         RABBITMQ_API = "http://localhost:15672/api/queues"
         LOGSTASH_CONF_DIR = "/etc/logstash/conf.d"
         KIBANA_HOST = "http://localhost:5601"
+        ELASTIC_HOST = "http://localhost:9200"
         ELASTIC_USER = "elastic"
         ELASTIC_PASS = "PlnLz35OqHQ1UAOLqo8b"
     }
@@ -40,22 +41,13 @@ pipeline {
             }
         }
 
-        stage('Register Kibana Template') {
+        stage('Register Elasticsearch Index Template') {
             steps {
                 sh '''
-                curl -X POST -u $ELASTIC_USER:$ELASTIC_PASS \
-                     -H "kbn-xsrf: true" \
+                curl -X PUT -u $ELASTIC_USER:$ELASTIC_PASS \
                      -H "Content-Type: application/json" \
-                     -d @kibana_template.json \
-                     "$KIBANA_HOST/api/saved_objects/index-pattern/my-index-*?overwrite=true"
-                '''
-            }
-        }
-
-        stage('Send Sample Data (via Node-RED)') {
-            steps {
-                sh '''
-                curl -X POST "$NODE_RED_HOST/sample-inject"
+                     -d @elasticsearch_template.json \
+                     "$ELASTIC_HOST/_index_template/my-template"
                 '''
             }
         }
@@ -68,6 +60,14 @@ pipeline {
                      -H "Content-Type: application/json" \
                      -d '{"attributes":{"title":"my-index-*","timeFieldName":"@timestamp"}}' \
                      "$KIBANA_HOST/api/saved_objects/index-pattern/my-index-*"
+                '''
+            }
+        }
+
+        stage('Send Sample Data (via Node-RED)') {
+            steps {
+                sh '''
+                curl -X POST "$NODE_RED_HOST/sample-inject"
                 '''
             }
         }
